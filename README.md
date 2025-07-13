@@ -16,3 +16,4 @@ Messages are stored in an SQLite3 database at `database/osu.db`. This database c
 ```bash
 node index.js
 ```
+![Example output of osu-log](https://files.catbox.moe/tnzhpv.png)
