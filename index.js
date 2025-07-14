@@ -79,6 +79,10 @@ const channels = [
     const messages = database.getMessages(req.query);
     reply.send(messages);
   });
+
+  fastify.get("/api/channels", async (req, reply) => {
+    reply.send(channels);
+  });
 })();
 
 function timeout(ms) {
