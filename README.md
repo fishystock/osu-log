@@ -35,3 +35,5 @@ http://localhost:3000/api/messages?
   date=2025-07-13&  # Fetch messages on specific date (ISO)
   page=1
 ```
+
+![Example output of osu-log](https://files.catbox.moe/tnzhpv.png)
