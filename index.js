@@ -3,6 +3,7 @@ const { Database } = require("./helpers/database.js");
 
 const logger = require("npmlog");
 const client = new (require("irc-framework").Client)();
+const fastify = require("fastify")();
 const database = new Database();
 
 require("dotenv").config({ quiet: true });
@@ -69,6 +70,15 @@ const channels = [
 
   client.on("registered", register);
   client.on("message", message);
+
+  fastify.listen({ port: process.env.API_PORT || 3000 }, () => {
+    logger.info(`Webserver created.`);
+  });
+
+  fastify.get("/api/messages", async (req, reply) => {
+    const messages = database.getMessages(req.query);
+    reply.send(messages);
+  });
 })();
 
 function timeout(ms) {

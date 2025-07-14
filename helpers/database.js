@@ -28,6 +28,41 @@ class Database {
       .run();
   }
 
+  getMessages(options = {}) {
+    const filtersMap = {
+      channel: "channel = ?",
+      message: "message = ?",
+      search: "message LIKE ?",
+      nickname: "nickname = ?",
+      date: "DATE(time) = DATE(?)",
+    };
+
+    const conditions = [];
+    const values = [];
+
+    for (const [key, clause] of Object.entries(filtersMap)) {
+      if (options[key] !== undefined) {
+        conditions.push(clause);
+        values.push(key === "search" ? `%${options[key]}%` : options[key]);
+      }
+    }
+
+    const limit = Math.min(options.limit || 100, 100);
+    const offset = ((options.page || 1) - 1) * limit;
+
+    const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+    const query = `
+      SELECT * FROM messages
+      ${where}
+      ORDER BY id DESC
+      LIMIT ? OFFSET ?
+    `;
+
+    values.push(limit, offset);
+
+    return this.context.prepare(query).all(...values);
+  }
+
   async addMessage(message, retries = 5) {
     const stmt = this.context.prepare(`
       INSERT INTO messages (host, identity, nickname, channel, message, time)
