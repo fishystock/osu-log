@@ -17,8 +17,6 @@ class Database {
       .prepare(
         `CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        host TEXT,
-        identity TEXT,
         nickname TEXT,
         channel TEXT,
         message TEXT,
@@ -65,15 +63,13 @@ class Database {
 
   async addMessage(message, retries = 5) {
     const stmt = this.context.prepare(`
-      INSERT INTO messages (host, identity, nickname, channel, message, time)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO messages (nickname, channel, message, time)
+      VALUES (?, ?, ?, ?)
     `);
 
     while (retries--) {
       try {
         stmt.run(
-          message.host,
-          message.identity,
           message.nickname,
           message.channel,
           message.message,
