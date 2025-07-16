@@ -69,9 +69,6 @@ class Database {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    // FIX: osu! username spaces are converted to `_` for IRC.
-    message.nickname = message.nickname.replaceAll("_", " ");
-
     while (retries--) {
       try {
         stmt.run(

@@ -1,60 +1,14 @@
 const { Message } = require("./helpers/message.js");
 const { Database } = require("./helpers/database.js");
 
-const logger = require("npmlog");
 const client = new (require("irc-framework").Client)();
+const channels = require("./channels.json");
 const fastify = require("fastify")();
+const logger = require("npmlog");
 const database = new Database();
 
 require("dotenv").config({ quiet: true });
 logger.level = "info";
-
-const channels = [
-  "#announce",
-  "#arabic",
-  "#bulgarian",
-  "#cantonese",
-  "#chinese",
-  "#ctb",
-  "#czechoslovak",
-  "#dutch",
-  "#english",
-  "#estonian",
-  "#filipino",
-  "#finnish",
-  "#french",
-  "#german",
-  "#greek",
-  "#hebrew",
-  "#help",
-  "#hungarian",
-  "#indonesian",
-  "#italian",
-  "#japanese",
-  "#korean",
-  "#latvian",
-  "#lazer",
-  "#lobby",
-  "#malaysian",
-  "#mapping",
-  "#modreqs",
-  "#osu",
-  "#osumania",
-  "#polish",
-  "#portuguese",
-  "#romanian",
-  "#russian",
-  "#skandinavian",
-  "#spanish",
-  "#taiko",
-  "#taiwanese",
-  "#thai",
-  "#turkish",
-  "#ukrainian",
-  "#uzbek",
-  "#videogames",
-  "#vietnamese",
-];
 
 !(function main() {
   logger.info(`Establishing connection to ${process.env.IRC_HOSTNAME}`);
@@ -108,6 +62,9 @@ function message(event) {
     logger.error("Non-whitelisted, skipping.");
     return;
   }
+
+  // FIX: osu! username spaces are converted to `_` for IRC.
+  message.nickname = message.nickname.replaceAll("_", " ");
 
   logger.info(`${message.channel} | ${message.nickname}: ${message.message}`);
 
