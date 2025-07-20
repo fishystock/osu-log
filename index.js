@@ -5,6 +5,7 @@ const client = new (require("irc-framework").Client)();
 const channels = require("./channels.json");
 const fastify = require("fastify")();
 const logger = require("npmlog");
+const axios = require("axios");
 const database = new Database();
 
 require("dotenv").config({ quiet: true });
@@ -36,6 +37,24 @@ logger.level = "info";
 
   fastify.get("/api/channels", async (req, reply) => {
     reply.send(channels);
+  });
+
+  fastify.get("/api/picture/:username", async (req, reply) => {
+    const { username } = req.params;
+    const osu_profile_root = "https://osu.ppy.sh/users/";
+
+    await axios
+      .get(`${osu_profile_root}${username}`, {
+        maxRedirects: 1,
+      })
+      .then((resp) => {
+        const id = resp.data.split(osu_profile_root)[1].split(`"`)[0];
+
+        reply.redirect(`https://a.ppy.sh/${id}?1337.png`);
+      })
+      .catch(() => {
+        reply.redirect("https://a.ppy.sh/00000?1337.png");
+      });
   });
 })();
 
