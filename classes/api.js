@@ -28,7 +28,6 @@ class APIServer {
 
   async getProfilePicture(request, response) {
     const { username } = request.params;
-    const osu_profile_root = "https://osu.ppy.sh/users/";
 
     await axios
       .get(`https://osu.ppy.sh/users/${request.params.username}`)
