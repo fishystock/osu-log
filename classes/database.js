@@ -49,9 +49,11 @@ class Database {
     const offset = ((options.page || 1) - 1) * limit;
 
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+    const collate = conditions.length ? `COLLATE NOCASE` : "";
     const query = `
       SELECT * FROM messages
       ${where}
+      ${collate}
       ORDER BY id DESC
       LIMIT ? OFFSET ?
     `;
