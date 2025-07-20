@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+    --color-background: #1b1618;
+    --color-filter: #46393f;
+    --color-message: #46393f;
+}
+
+.ubuntu-mono-regular {
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-slab {
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+}
+
+body {
+    background-color: var(--color-background) !important;
+}
+
+#filters {
+    background-color: var(--color-filter) !important;
+}
+
+input,
+select {
+    background-color: var(--color-background) !important;
+}
+
+.message {
+    background-color: var(--color-message) !important;
+    margin-top: 0.5 !important;
+}
+
+.message:hover {
+    filter: brightness(1.1);
+}

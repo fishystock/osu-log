@@ -10,46 +10,58 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-    <body class="bg-gray-900 text-gray-100">
-        <header class="flex bg-pink-900 items-center gap-2 p-4">
-            <h1 class="text-3xl font-semibold">osu! logger</h1>
-        </header>
-        <div
-            id="filters"
-            class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-slate-800 p-4 shadow-lg"
-        >
-            <select
-                name="channel"
-                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-            >
-                <option value="">all channels</option>
-            </select>
-            <input
-                name="search"
-                placeholder="search (substring)"
-                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <input
-                name="message"
-                placeholder="message (exact)"
-                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <input
-                name="nickname"
-                placeholder="nickname"
-                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <input
-                name="date"
-                type="date"
-                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-        </div>
-        <div id="messages" class="space-y-1 mt-1"></div>
-        <div id="status" class="text-center py-4 text-sm text-pink-300"></div>
+        <script
+            src="https://cdn.tailwindcss.com"
+            referrerpolicy="no-referrer"
+        ></script>
 
+        <link rel="stylesheet" href="css/main.css" />
         <script src="js/main.js"></script>
+    </head>
+    <body class="bg-gray-900 text-gray-100 ubuntu-mono-regular">
+        <div class="mx-auto max-w-2xl">
+            <header
+                class="flex justify-between bg-pink-700 items-center gap-2 p-4"
+            >
+                <h1 class="text-3xl font-bold roboto-slab">osu! logger</h1>
+                <i class="text-3xl fa-solid fa-book-skull"></i>
+            </header>
+            <div
+                id="filters"
+                class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-slate-800 p-4 shadow-lg mt-1"
+            >
+                <select
+                    name="channel"
+                    class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                >
+                    <option value="">all channels</option>
+                </select>
+                <input
+                    name="search"
+                    placeholder="search (substring)"
+                    class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+                <input
+                    name="message"
+                    placeholder="message (exact)"
+                    class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+                <input
+                    name="nickname"
+                    placeholder="nickname"
+                    class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+                <input
+                    name="date"
+                    type="date"
+                    class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+            </div>
+            <div id="messages" class="space-y-1 mt-1"></div>
+            <div
+                id="status"
+                class="text-center py-4 text-sm text-pink-300"
+            ></div>
+        </div>
     </body>
 </html>

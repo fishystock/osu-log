@@ -2,10 +2,6 @@ let page = 1;
 let loading = false;
 let hasMore = true;
 
-const messagesDiv = document.getElementById("messages");
-const filtersDiv = document.getElementById("filters");
-const statusDiv = document.getElementById("status");
-
 const filters = {
   channel: "",
   search: "",
@@ -57,18 +53,20 @@ async function renderMessages(messages) {
   // TODO: Update shitty image with actual profile picture once ID's are worked out.
 
   const messageTemplate = `
-    <div class="bg-slate-800 p-4 shadow-md hover:bg-slate-700 transition flex items-center space-x-4">
+    <div class="message bg-slate-800 p-4 shadow-md hover:bg-pink-950 transition flex items-center space-x-4 max-w-2xl">
       <img src="https://a.ppy.sh/1337.png" alt="USERNAME" class="w-10 h-10 flex-shrink-0" />
-      <div class="flex-1">
+      <div class="flex-1 break-words break-all w-full overflow-wrap">
         <div class="flex justify-between items-center text-sm">
-          <a href="https://osu.ppy.sh/users/USERNAME">
-            <span class="font-semibold text-pink-300">USERNAME</span>
+          <span>
+            <a href="https://osu.ppy.sh/users/USERNAME" target="_blank">
+              <span class="font-semibold text-pink-300 hover:text-red-500">USERNAME</span>
+            </a>
             in
             <span class="font-semibold text-pink-300">CHANNEL</span>
-          </a>
+          </span>
           <time>TIME</time>
         </div>
-        <div class="text-lg break-words">
+        <div class="text-lg break-words break-all">
           MESSAGE
         </div>
       </div>
@@ -112,13 +110,7 @@ async function getChannels() {
     });
 }
 
-async function main() {
-  await getChannels();
-  await fetchMessages();
-}
-
-document.addEventListener("DOMContentLoaded", main);
-filtersDiv.addEventListener("input", (e) => {
+function handleFilterUpdate(e) {
   const target = e.target;
   if (!target.name) return;
   filters[target.name] = target.value;
@@ -126,7 +118,20 @@ filtersDiv.addEventListener("input", (e) => {
   hasMore = true;
   statusDiv.innerText = "";
   fetchMessages(true);
-});
+}
+
+async function main() {
+  window.messagesDiv = document.getElementById("messages");
+  window.filtersDiv = document.getElementById("filters");
+  window.statusDiv = document.getElementById("status");
+
+  filtersDiv.addEventListener("input", handleFilterUpdate);
+
+  await getChannels();
+  await fetchMessages();
+}
+
+document.addEventListener("DOMContentLoaded", main);
 
 document.addEventListener("scroll", () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
