@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-900 text-gray-100">
+        <header class="flex bg-pink-900 items-center gap-2 p-4">
+            <h1 class="text-3xl font-semibold">osu! logger</h1>
+        </header>
+        <div
+            id="filters"
+            class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-slate-800 p-4 shadow-lg"
+        >
+            <select
+                name="channel"
+                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            >
+                <option value="">all channels</option>
+            </select>
+            <input
+                name="search"
+                placeholder="search (substring)"
+                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            />
+            <input
+                name="message"
+                placeholder="message (exact)"
+                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            />
+            <input
+                name="nickname"
+                placeholder="nickname"
+                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            />
+            <input
+                name="date"
+                type="date"
+                class="bg-slate-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            />
+        </div>
+        <div id="messages" class="space-y-1 mt-1"></div>
+        <div id="status" class="text-center py-4 text-sm text-pink-300"></div>
+
+        <script src="/js/main.js"></script>
+    </body>
+</html>

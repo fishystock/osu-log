@@ -1,0 +1,136 @@
+let page = 1;
+let loading = false;
+let hasMore = true;
+
+const messagesDiv = document.getElementById("messages");
+const filtersDiv = document.getElementById("filters");
+const statusDiv = document.getElementById("status");
+
+const filters = {
+  channel: "",
+  search: "",
+  message: "",
+  nickname: "",
+  date: "",
+};
+
+function purifyString(string) {
+  const d = document.createElement("div");
+  d.textContent = string;
+
+  return d.innerHTML;
+}
+
+function buildQuery() {
+  const query = new URLSearchParams();
+
+  Object.entries(filters).forEach(([k, v]) => {
+    if (v) query.append(k, v);
+  });
+  query.append("page", page);
+
+  return query.toString();
+}
+
+async function fetchMessages(reset = false) {
+  if (!hasMore || loading) return;
+  if (reset) messagesDiv.innerHTML = "";
+
+  // Prevent weird double-calls
+  loading = true;
+
+  await fetch(`/api/messages?${buildQuery()}`)
+    .then((resp) => resp.json())
+    .then((messages) => {
+      if (messages.length === 0) {
+        statusDiv.innerText = "No more messages!";
+        loading = false;
+        return;
+      }
+
+      renderMessages(messages);
+      loading = false;
+    });
+}
+
+async function renderMessages(messages) {
+  // TODO: Update shitty image with actual profile picture once ID's are worked out.
+
+  const messageTemplate = `
+    <div class="bg-slate-800 p-4 shadow-md hover:bg-slate-700 transition flex items-center space-x-4">
+      <img src="https://a.ppy.sh/1337.png" alt="USERNAME" class="w-10 h-10 flex-shrink-0" />
+      <div class="flex-1">
+        <div class="flex justify-between items-center text-sm">
+          <a href="https://osu.ppy.sh/users/USERNAME">
+            <span class="font-semibold text-pink-300">USERNAME</span>
+            in
+            <span class="font-semibold text-pink-300">CHANNEL</span>
+          </a>
+          <time>TIME</time>
+        </div>
+        <div class="text-lg break-words">
+          MESSAGE
+        </div>
+      </div>
+    </div>
+  `;
+
+  messages.forEach((m) => {
+    const date = new Date(m.time);
+    const formattedTime = date
+      .toLocaleString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour12: false,
+      })
+      .replace(",", "");
+
+    messagesDiv.innerHTML += messageTemplate
+      .replaceAll("MESSAGE", purifyString(m.message))
+      .replaceAll("CHANNEL", purifyString(m.channel))
+      .replaceAll("TIME", purifyString(formattedTime))
+      .replaceAll("USERNAME", purifyString(m.nickname));
+  });
+}
+
+async function getChannels() {
+  await fetch("/api/channels")
+    .then((resp) => resp.json())
+    .then((channels) => {
+      const select = document.querySelector('select[name="channel"]');
+
+      channels.forEach((channel) => {
+        const option = document.createElement("option");
+        option.value = channel;
+        option.textContent = channel;
+
+        select.appendChild(option);
+      });
+    });
+}
+
+async function main() {
+  await getChannels();
+  await fetchMessages();
+}
+
+document.addEventListener("DOMContentLoaded", main);
+filtersDiv.addEventListener("input", (e) => {
+  const target = e.target;
+  if (!target.name) return;
+  filters[target.name] = target.value;
+  page = 1;
+  hasMore = true;
+  statusDiv.innerText = "";
+  fetchMessages(true);
+});
+
+document.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+    page++;
+    fetchMessages(false);
+  }
+});
