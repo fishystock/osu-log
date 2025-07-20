@@ -39,7 +39,7 @@ async function fetchMessages(reset = false) {
   // Prevent weird double-calls
   loading = true;
 
-  await fetch(`/api/messages?${buildQuery()}`)
+  await fetch(`api/messages?${buildQuery()}`)
     .then((resp) => resp.json())
     .then((messages) => {
       if (messages.length === 0) {
@@ -97,7 +97,7 @@ async function renderMessages(messages) {
 }
 
 async function getChannels() {
-  await fetch("/api/channels")
+  await fetch("api/channels")
     .then((resp) => resp.json())
     .then((channels) => {
       const select = document.querySelector('select[name="channel"]');
