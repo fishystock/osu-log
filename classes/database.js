@@ -1,5 +1,7 @@
 const SQLite3 = require("better-sqlite3");
 
+// TODO: Retry on locks for SELECT statements. There should be a clean way to do this.
+
 class Database {
   constructor(path = "./database/osu.db") {
     this.context = new SQLite3(path);
@@ -16,14 +18,24 @@ class Database {
     this.context
       .prepare(
         `CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nickname TEXT,
-        channel TEXT,
-        message TEXT,
-        time TEXT
-      );`,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nickname TEXT,
+          channel TEXT,
+          message TEXT,
+          time TEXT
+        );`,
       )
       .run();
+  }
+
+  getStatistics() {
+    const query = this.context.prepare(`
+      SELECT
+        COUNT(*) AS messageCount
+        FROM messages;
+    `);
+
+    return query.get();
   }
 
   getMessages(options = {}) {
@@ -52,10 +64,10 @@ class Database {
     const collate = conditions.length ? `COLLATE NOCASE` : "";
     const query = `
       SELECT * FROM messages
-      ${where}
-      ${collate}
-      ORDER BY id DESC
-      LIMIT ? OFFSET ?
+        ${where}
+        ${collate}
+        ORDER BY id DESC
+        LIMIT ? OFFSET ?
     `;
 
     values.push(limit, offset);

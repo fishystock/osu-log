@@ -120,6 +120,21 @@ function handleFilterUpdate(e) {
   fetchMessages(true);
 }
 
+async function updateMessageCounter() {
+  const counter = document.querySelector("#message-counter");
+
+  await fetch("api/statisticsa")
+    .then((resp) => resp.json())
+    .then((json) => {
+      counter.innerText = json.count.toLocaleString("en", {
+        useGrouping: true,
+      });
+    })
+    .catch((err) => {
+      counter.innerText = "an unknown amount of";
+    });
+}
+
 async function main() {
   window.messagesDiv = document.getElementById("messages");
   window.filtersDiv = document.getElementById("filters");
@@ -129,6 +144,7 @@ async function main() {
 
   await getChannels();
   await fetchMessages();
+  await updateMessageCounter();
 }
 
 document.addEventListener("DOMContentLoaded", main);

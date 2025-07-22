@@ -22,6 +22,7 @@ class APIServer {
     this.fastify.get("/api/messages", this.getMessages);
     this.fastify.get("/api/channels", this.getChannels);
     this.fastify.get("/api/picture/:username", this.getProfilePicture);
+    this.fastify.get("/api/statistics", this.getStatistics);
 
     this.fastify.listen({ port: process.env.API_PORT || 3000 });
   }
@@ -32,6 +33,10 @@ class APIServer {
 
   async getChannels(request, response) {
     response.send(channels);
+  }
+
+  async getStatistics(request, response) {
+    response.send(database.getStatistics());
   }
 
   async getContext(request, response) {
