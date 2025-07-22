@@ -126,7 +126,7 @@ async function updateMessageCounter() {
   await fetch("api/statistics")
     .then((resp) => resp.json())
     .then((json) => {
-      counter.innerText = json.count.toLocaleString("en", {
+      counter.innerText = json.messageCount.toLocaleString("en", {
         useGrouping: true,
       });
     })
