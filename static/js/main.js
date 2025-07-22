@@ -123,7 +123,7 @@ function handleFilterUpdate(e) {
 async function updateMessageCounter() {
   const counter = document.querySelector("#message-counter");
 
-  await fetch("api/statisticsa")
+  await fetch("api/statistics")
     .then((resp) => resp.json())
     .then((json) => {
       counter.innerText = json.count.toLocaleString("en", {
