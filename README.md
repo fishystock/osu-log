@@ -1,8 +1,7 @@
 # osu-log
-🛰️ osu.ppy.sh IRC Logger.
+osu.ppy.sh IRC Logger.
 
 ### Information
-This is a module to a larger project involving osu! data collection.
 - No, I am not using your information to train AI.
 - No, I am not committing a crime by doing this.
 
